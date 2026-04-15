@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CIT · Soporte Retroalimentación · Podemos Progresar</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --green: #8DC63F;
+    --green-light: #eef6e0;
+    --green-dark: #5a8a1a;
+    --purple: #903C8F;
+    --purple-light: #f3e5f3;
+    --gray: #464547;
+    --gray-light: #f5f5f4;
+    --orange: #F7961E;
+    --orange-light: #fef3e2;
+    --white: #ffffff;
+    --text: #2a2a2a;
+    --text-muted: #666;
+    --border: rgba(70,69,71,0.13);
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 2px 12px rgba(0,0,0,0.07);
+  }
+
+  html { scroll-behavior: smooth; }
+  body { font-family: 'DM Sans', sans-serif; background: #f4f3f0; color: var(--text); min-height: 100vh; }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 64px;
+  }
+  .logo-area { display: flex; align-items: center; gap: 10px; }
+  .logo-circle {
+    width: 36px; height: 36px; background: var(--green);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .logo-circle span { font-family: 'Fraunces', serif; font-size: 11px; font-weight: 600; color: white; }
+  .logo-text { font-family: 'Fraunces', serif; font-size: 15px; font-weight: 500; color: var(--gray); line-height: 1.2; }
+  .logo-sub { font-size: 11px; color: var(--text-muted); font-weight: 300; letter-spacing: 0.4px; }
+  nav { display: flex; gap: 4px; }
+  nav a {
+    font-size: 13px; font-weight: 400; color: var(--text-muted);
+    text-decoration: none; padding: 6px 14px;
+    border-radius: var(--radius-sm); transition: all 0.15s; cursor: pointer;
+    border: 1px solid transparent;
+  }
+  nav a:hover { color: var(--green-dark); background: var(--green-light); }
+  nav a.active { color: var(--green-dark); background: var(--green-light); border-color: rgba(90,138,26,0.2); }
+
+  /* ── HERO ── */
+  .hero {
+    background: var(--green);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-ring {
+    position: absolute; border-radius: 50%;
+    border: 1.5px solid rgba(255,255,255,0.2);
+    pointer-events: none;
+  }
+  .hero-ring-1 { width: 180px; height: 180px; top: -60px; left: -50px; }
+  .hero-ring-2 { width: 120px; height: 120px; top: 20px; left: 60px; }
+  .hero-ring-3 { width: 240px; height: 240px; bottom: -80px; right: -60px; }
+  .hero-ring-4 { width: 100px; height: 100px; bottom: 20px; right: 80px; }
+  .hero-tag {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(255,255,255,0.2); color: white;
+    font-size: 11px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+    padding: 5px 16px; border-radius: 20px; margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif; font-size: 30px; font-weight: 500;
+    color: white; line-height: 1.25; margin-bottom: 0.75rem;
+  }
+  .hero p {
+    font-size: 14px; color: rgba(255,255,255,0.88);
+    max-width: 500px; margin: 0 auto 2rem; line-height: 1.7;
+  }
+  .hero-nav {
+    display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+  }
+  .hero-nav-btn {
+    font-size: 13px; padding: 8px 20px; border-radius: 24px; cursor: pointer;
+    border: 1.5px solid rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.12); color: white;
+    font-weight: 400; transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .hero-nav-btn:hover { background: rgba(255,255,255,0.28); border-color: white; }
+
+  /* ── MAIN ── */
+  .main { max-width: 860px; margin: 0 auto; padding: 2.5rem 1.5rem 5rem; }
+  .section-block { display: none; animation: fadeIn 0.2s ease; }
+  .section-block.visible { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  .section-header { display: flex; align-items: center; gap: 12px; margin-bottom: 1.5rem; }
+  .section-icon {
+    width: 40px; height: 40px; border-radius: 11px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .section-icon.green { background: var(--green-light); }
+  .section-icon.purple { background: var(--purple-light); }
+  .section-icon.orange { background: var(--orange-light); }
+  .section-title-text h2 { font-family: 'Fraunces', serif; font-size: 22px; font-weight: 500; color: var(--gray); }
+  .section-title-text p { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+
+  /* ── FAQ ── */
+  .faq-category {
+    font-size: 10px; font-weight: 500; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--green-dark); margin: 1.75rem 0 0.75rem;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .faq-category::after { content: ''; flex: 1; height: 1px; background: var(--green-light); }
+  .faq-item {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); margin-bottom: 8px; overflow: hidden;
+    transition: box-shadow 0.2s;
+  }
+  .faq-item:hover { box-shadow: var(--shadow); }
+  .faq-q {
+    padding: 1rem 1.25rem; cursor: pointer;
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem;
+    font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.5;
+    user-select: none; transition: background 0.15s;
+  }
+  .faq-q:hover { background: var(--gray-light); }
+  .faq-arrow {
+    width: 22px; height: 22px; flex-shrink: 0; border-radius: 50%;
+    background: var(--green-light); display: flex; align-items: center; justify-content: center;
+    font-size: 10px; color: var(--green-dark);
+    transition: transform 0.25s, background 0.2s; margin-top: 1px;
+  }
+  .faq-item.open .faq-arrow { transform: rotate(180deg); background: var(--green); color: white; }
+  .faq-a {
+    display: none; padding: 0.875rem 1.25rem 1.125rem;
+    font-size: 14px; color: var(--text-muted); line-height: 1.75;
+    border-top: 1px solid var(--border);
+    background: #fafaf9;
+  }
+  .faq-item.open .faq-a { display: block; }
+  .faq-a ul { padding-left: 1.25rem; margin-top: 0.5rem; }
+  .faq-a li { margin-bottom: 5px; }
+  .faq-a strong { color: var(--text); font-weight: 500; }
+
+  /* ── FORM ── */
+  .form-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 2rem;
+  }
+  .form-row { margin-bottom: 1.25rem; }
+  .form-row label {
+    display: block; font-size: 11px; font-weight: 500;
+    color: var(--text-muted); letter-spacing: 0.6px; margin-bottom: 7px; text-transform: uppercase;
+  }
+  .form-row input, .form-row textarea, .form-row select {
+    width: 100%; padding: 10px 14px;
+    border: 1px solid rgba(70,69,71,0.18); border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text);
+    background: var(--white); transition: border-color 0.15s; outline: none; -webkit-appearance: none;
+  }
+  .form-row input:focus, .form-row textarea:focus, .form-row select:focus {
+    border-color: var(--green); box-shadow: 0 0 0 3px rgba(141,198,63,0.15);
+  }
+  .form-row textarea { resize: vertical; min-height: 130px; line-height: 1.65; }
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .submit-btn {
+    background: var(--green); color: white; border: none;
+    padding: 12px 32px; border-radius: var(--radius-sm);
+    font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
+    cursor: pointer; transition: background 0.15s, transform 0.1s;
+  }
+  .submit-btn:hover { background: var(--green-dark); }
+  .submit-btn:active { transform: scale(0.98); }
+  .submit-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+  .form-note { font-size: 12px; color: var(--text-muted); margin-top: 0.875rem; display: flex; align-items: center; gap: 5px; }
+  .success-msg {
+    display: none; background: var(--green-light);
+    border: 1px solid rgba(90,138,26,0.25); border-radius: var(--radius-sm);
+    padding: 1rem 1.25rem; margin-top: 1rem;
+    font-size: 14px; color: var(--green-dark); line-height: 1.5;
+  }
+  .success-msg.show { display: block; }
+
+  /* ── MATERIALES ── */
+  .mat-count {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--orange-light); color: #b86a00;
+    font-size: 12px; font-weight: 500; padding: 3px 10px;
+    border-radius: 20px; margin-left: 10px; vertical-align: middle;
+  }
+  .materiales-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(255px, 1fr));
+    gap: 14px;
+  }
+  .material-card {
+    background: var(--white); border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.25rem 1.375rem;
+    cursor: pointer; transition: all 0.2s;
+    display: flex; flex-direction: column; gap: 7px;
+    text-decoration: none;
+  }
+  .material-card:hover {
+    border-color: rgba(144,60,143,0.3);
+    box-shadow: 0 4px 16px rgba(144,60,143,0.1);
+    transform: translateY(-2px);
+  }
+  .mat-top { display: flex; justify-content: space-between; align-items: center; }
+  .material-type {
+    font-size: 10px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase;
+    padding: 3px 9px; border-radius: 20px; display: inline-block;
+  }
+  .type-pdf { background: #fde8e8; color: #b03030; }
+  .type-video { background: #e8e8fe; color: #4040b8; }
+  .type-link { background: var(--purple-light); color: var(--purple); }
+  .type-ppt { background: var(--orange-light); color: #b86a00; }
+  .mat-badge {
+    font-size: 10px; color: var(--green-dark); background: var(--green-light);
+    padding: 2px 8px; border-radius: 10px; font-weight: 500;
+  }
+  .material-name { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4; }
+  .material-desc { font-size: 12px; color: var(--text-muted); line-height: 1.55; flex: 1; }
+  .mat-footer {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-top: 6px; padding-top: 10px; border-top: 1px solid var(--border);
+  }
+  .mat-link { font-size: 12px; color: var(--purple); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  .site-footer {
+    background: var(--white); border-top: 1px solid var(--border);
+    padding: 1.5rem 2rem; text-align: center;
+    font-size: 12px; color: var(--text-muted);
+  }
+  .site-footer strong { color: var(--gray); font-weight: 500; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 620px) {
+    .site-header { padding: 0 1rem; }
+    nav { display: none; }
+    .hero { padding: 2rem 1.25rem 2rem; }
+    .hero h1 { font-size: 22px; }
+    .main { padding: 1.5rem 1rem 4rem; }
+    .form-grid { grid-template-columns: 1fr; }
+    .materiales-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <div class="logo-area">
+    <div class="logo-circle"><span>CIT</span></div>
+    <div>
+      <div class="logo-text">Ciclo Integral de Talento</div>
+      <div class="logo-sub">Centro de soporte · Retroalimentación</div>
+    </div>
+  </div>
+  <nav>
+    <a class="active" onclick="showSection('faq',this)">Preguntas frecuentes</a>
+    <a onclick="showSection('dudas',this)">Enviar duda</a>
+    <a onclick="showSection('materiales',this)">Material complementario</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-ring hero-ring-1"></div>
+  <div class="hero-ring hero-ring-2"></div>
+  <div class="hero-ring hero-ring-3"></div>
+  <div class="hero-ring hero-ring-4"></div>
+  <div class="hero-tag">&#9679; Evaluación de Desempeño 2025</div>
+  <h1>Soporte para el proceso<br>de retroalimentación</h1>
+  <p>Encuentra respuestas a las dudas más comunes, envíanos tu pregunta o consulta los materiales de apoyo del proceso.</p>
+  <div class="hero-nav">
+    <button class="hero-nav-btn" onclick="showSection('faq',null)">Preguntas frecuentes</button>
+    <button class="hero-nav-btn" onclick="showSection('dudas',null)">Enviar una duda</button>
+    <button class="hero-nav-btn" onclick="showSection('materiales',null)">Material complementario</button>
+  </div>
+</div>
+
+<main class="main">
+
+  <!-- ══ FAQ ══ -->
+  <div id="section-faq" class="section-block visible">
+    <div class="section-header">
+      <div class="section-icon green">&#10067;</div>
+      <div class="section-title-text">
+        <h2>Preguntas frecuentes</h2>
+        <p>Respuestas a las dudas más comunes del proceso de evaluación</p>
+      </div>
+    </div>
+
+    <div class="faq-category">Cómo funciona la evaluación</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Puedo influir para subir o bajar la calificación de un socio?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        No deberíamos "jugar" con la evaluación de las personas. La evaluación debe ser <strong>objetiva y basada en la realidad</strong>, con ejemplos claros y observables del desempeño y comportamiento del socio.<br><br>
+        La calificación es el resultado de lo que realmente ocurrió durante el periodo. Además, no depende solo del criterio del líder — la calificación final se obtiene al cruzar dos elementos:
+        <ul>
+          <li>El cumplimiento de sus indicadores (resultados).</li>
+          <li>Sus habilidades y potencial.</li>
+        </ul>
+        La combinación de ambos determina el resultado final dentro del proceso de calibración organizacional.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Solo me midieron 5 meses de 6. ¿Esto me afecta?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        No te afecta. Sean 3, 5 o los meses que hayas vivido en el periodo, lo que realmente aporta valor son los <strong>resultados obtenidos en los meses en los que trabajaste y tuviste metas activas</strong>.
+      </div>
+    </div>
+
+    <div class="faq-category">Quién participa en la evaluación</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Quién debe evaluar si un líder solo lleva 2 meses con su socio?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        El <strong>líder actual debe estar presente y liderar la estrategia de retroalimentación</strong>. Como buena práctica, debe integrar al líder anterior para entender el contexto completo del periodo y evitar que se pierda información del desempeño del socio.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Tengo a la mitad de mi tribu que es nueva. ¿Ellos participan en la evaluación?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        Para participar en la evaluación, un socio debe contar con <strong>mínimo 3 meses con metas activas</strong>. Si no cumple este tiempo, participará en el siguiente ciclo.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Por qué ahora no se evaluará a los líderes?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        En esta etapa el proceso está enfocado en <strong>fortalecer la base organizacional</strong>. Las evaluaciones de líderes continúan mediante otras herramientas y etapas del ciclo integral de talento.
+      </div>
+    </div>
+
+    <div class="faq-category">Qué pasa después de la evaluación</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Ya existe un plan activo por desempeño. ¿La evaluación puede generar otro plan?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        Sí. La evaluación de desempeño <strong>siempre debe generar un plan</strong> enfocado en sus resultados. Puede complementarse con planes existentes, pero es necesario contar con retroalimentación y acciones construidas específicamente a partir de la información del proceso.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Cuándo deben iniciar los planes derivados de la evaluación?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        Los planes comienzan <strong>una vez comunicados formalmente los resultados</strong>. Si la comunicación ocurre en abril, el plan inicia en ese momento.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Tengo un socio B o B+. ¿Qué tengo que hacer?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        En ambos casos debes realizar y ejecutar un <strong>Plan de Mejora</strong>:
+        <ul>
+          <li><strong>Socio B:</strong> el plan debe enfocarse en mejorar resultados en indicadores de desempeño.</li>
+          <li><strong>Socio B+:</strong> mismo formato de plan, enfocado en fortalecer habilidades, potencial y comportamientos que están impactando su resultado.</li>
+        </ul>
+        El objetivo es ayudar al socio a evolucionar en el siguiente ciclo.
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        Tengo un socio C. ¿Qué tengo que revisar?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        Debes <strong>acercarte de inmediato a Excelencia Operativa</strong>, quienes son los socios estratégicos encargados de revisar cada caso y brindarte los lineamientos correctos para desplegar las acciones necesarias.
+      </div>
+    </div>
+
+    <div class="faq-category">Casos especiales</div>
+
+    <div class="faq-item">
+      <div class="faq-q" onclick="toggleFaq(this)">
+        ¿Qué pasa con socios en incapacidad larga por accidente u operación?
+        <span class="faq-arrow">&#9660;</span>
+      </div>
+      <div class="faq-a">
+        Cada caso se revisa de forma <strong>individual</strong> considerando el tiempo efectivo trabajado, las condiciones médicas y los lineamientos legales, para asegurar un proceso justo.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ DUDAS ══ -->
+  <div id="section-dudas" class="section-block">
+    <div class="section-header">
+      <div class="section-icon purple">&#9993;</div>
+      <div class="section-title-text">
+        <h2>Envía tu duda</h2>
+        <p>Tu pregunta llegará directamente al equipo de Desarrollo Organizacional</p>
+      </div>
+    </div>
+    <div class="form-card">
+      <div class="form-grid">
+        <div class="form-row">
+          <label>Nombre completo</label>
+          <input type="text" id="f-nombre" placeholder="Tu nombre">
+        </div>
+        <div class="form-row">
+          <label>Área / Tribu</label>
+          <input type="text" id="f-area" placeholder="Ej. Ventas, Operaciones...">
+        </div>
+      </div>
+      <div class="form-row">
+        <label>Tema de la duda</label>
+        <select id="f-tema">
+          <option value="">Selecciona un tema...</option>
+          <option>Cómo funciona la evaluación</option>
+          <option>Participantes y criterios</option>
+          <option>Planes de mejora</option>
+          <option>Casos especiales</option>
+          <option>Otro</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label>Tu duda o pregunta</label>
+        <textarea id="f-mensaje" placeholder="Escribe aquí tu duda con el mayor detalle posible..."></textarea>
+      </div>
+      <button class="submit-btn" onclick="enviarDuda(this)">Enviar duda &#8594;</button>
+      <div class="form-note">&#9679;&nbsp; Tu mensaje llegará a m.rangel@podemos.mx · Dirección de Personas</div>
+      <div class="success-msg" id="success-msg">
+        &#10003;&nbsp; Tu duda fue enviada con éxito. El equipo de Desarrollo Organizacional te responderá a la brevedad.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ MATERIALES ══ -->
+  <div id="section-materiales" class="section-block">
+    <div class="section-header">
+      <div class="section-icon orange">&#128196;</div>
+      <div class="section-title-text">
+        <h2>Material complementario <span class="mat-count">4 recursos</span></h2>
+        <p>Recursos de apoyo para el proceso de retroalimentación</p>
+      </div>
+    </div>
+    <div class="materiales-grid">
+
+      <a class="material-card" href="https://rebrand.ly/GROW-CIT" target="_blank" rel="noopener">
+        <div class="mat-top">
+          <span class="material-type type-link">Enlace</span>
+          <span class="mat-badge">Destacado</span>
+        </div>
+        <div class="material-name">El Modelo GROW: Feedback de Alto Impacto</div>
+        <div class="material-desc">Metodología de coaching para estructurar conversaciones de retroalimentación. Incluye las 4 fases: Meta, Realidad, Opciones y Voluntad.</div>
+        <div class="mat-footer"><span class="mat-link">Abrir recurso &#8594;</span></div>
+      </a>
+
+      <a class="material-card" href="https://podemosprogresar.my.canva.site/" target="_blank" rel="noopener">
+        <div class="mat-top">
+          <span class="material-type type-link">Enlace</span>
+          <span class="mat-badge">Destacado</span>
+        </div>
+        <div class="material-name">Portal CIT · Podemos Progresar</div>
+        <div class="material-desc">Sitio institucional del Ciclo Integral de Talento con recursos, guías y materiales del proceso.</div>
+        <div class="mat-footer"><span class="mat-link">Abrir recurso &#8594;</span></div>
+      </a>
+
+      <a class="material-card" href="https://drive.google.com/file/d/1oMus2K5MkBHg_UNjny8R52pK_-1JBcZZ/view?usp=sharing" target="_blank" rel="noopener">
+        <div class="mat-top">
+          <span class="material-type type-pdf">PDF</span>
+        </div>
+        <div class="material-name">El ABC de la Retroalimentación 70-20-10</div>
+        <div class="material-desc">Guía práctica para consejeros sobre cómo estructurar el aprendizaje en campo (70%), social (20%) y formal (10%).</div>
+        <div class="mat-footer"><span class="mat-link">Abrir recurso &#8594;</span></div>
+      </a>
+
+      <a class="material-card" href="https://drive.google.com/file/d/1v1qNa5VJT_pXwsySXUIFKGe0JHtlUt20/view?usp=sharing" target="_blank" rel="noopener">
+        <div class="mat-top">
+          <span class="material-type type-pdf">PDF</span>
+        </div>
+        <div class="material-name">Modelo GROW — Infografía de referencia</div>
+        <div class="material-desc">Infografía visual del modelo GROW con beneficios del feedback de alto impacto e impacto en liderazgo y madurez cultural.</div>
+        <div class="mat-footer"><span class="mat-link">Abrir recurso &#8594;</span></div>
+      </a>
+
+    </div>
+  </div>
+
+</main>
+
+<footer class="site-footer">
+  <strong>CIT · Ciclo Integral de Talento</strong> &nbsp;·&nbsp; Dirección de Personas &nbsp;·&nbsp; Podemos Progresar
+</footer>
+
+<script>
+  function toggleFaq(el) {
+    var item = el.parentElement;
+    var wasOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(i){ i.classList.remove('open'); });
+    if (!wasOpen) item.classList.add('open');
+  }
+
+  function showSection(id, navEl) {
+    document.querySelectorAll('.section-block').forEach(function(s){ s.classList.remove('visible'); });
+    document.getElementById('section-' + id).classList.add('visible');
+    document.querySelectorAll('nav a').forEach(function(a){ a.classList.remove('active'); });
+    if (navEl) {
+      navEl.classList.add('active');
+    } else {
+      var idx = { faq: 0, dudas: 1, materiales: 2 };
+      var links = document.querySelectorAll('nav a');
+      if (links[idx[id]]) links[idx[id]].classList.add('active');
+    }
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }
+
+  function enviarDuda(btn) {
+    var nombre = document.getElementById('f-nombre').value.trim();
+    var area   = document.getElementById('f-area').value.trim();
+    var tema   = document.getElementById('f-tema').value;
+    var msg    = document.getElementById('f-mensaje').value.trim();
+    if (!nombre || !msg) { alert('Por favor ingresa tu nombre y tu duda.'); return; }
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    var subj = encodeURIComponent('[CIT Duda] ' + (tema || 'Consulta') + ' - ' + nombre);
+    var body = encodeURIComponent(
+      'Nombre: ' + nombre + '\n' +
+      'Área: ' + (area || 'No especificada') + '\n' +
+      'Tema: ' + (tema || 'No especificado') + '\n\n' +
+      'Duda:\n' + msg
+    );
+    window.location.href = 'mailto:m.rangel@podemos.mx?subject=' + subj + '&body=' + body;
+    setTimeout(function() {
+      document.getElementById('success-msg').classList.add('show');
+      btn.disabled = false;
+      btn.textContent = 'Enviar duda →';
+    }, 800);
+  }
+</script>
+</body>
+</html>
